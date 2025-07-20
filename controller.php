@@ -19,12 +19,14 @@ class {identifier}ExtensionController extends Controller
         $provider = $this->blueprint->dbGet('{identifier}', 'provider') ?: 'disabled';
         $widgetId = $this->blueprint->dbGet('{identifier}', 'widgetId') ?: '';
         $baseUrl = $this->blueprint->dbGet('{identifier}', 'baseUrl') ?: 'https://app.chatwoot.com';
+        $scriptUrl = $this->blueprint->dbGet('{identifier}', 'scriptUrl') ?: '';
 
         return $this->view->make(
             'admin.extensions.{identifier}.index', [
                 'provider' => $provider,
                 'widgetId' => $widgetId,
                 'baseUrl' => $baseUrl,
+                'scriptUrl' => $scriptUrl,
                 'root' => "/admin/extensions/{identifier}",
                 'blueprint' => $this->blueprint,
             ]
@@ -45,6 +47,7 @@ class {identifier}ExtensionController extends Controller
             'tidio' => 'Tidio',
             'zendesk' => 'Zendesk Chat',
             'zoho' => 'Zoho SalesIQ',
+            'liveagent' => 'LiveAgent',
             'disabled' => 'Chat Disabled'
         ];
 
@@ -62,7 +65,7 @@ class {identifier}SettingsFormRequest extends AdminFormRequest
     public function rules(): array
     {
         $rules = [
-            'provider' => ['required', 'string', 'in:crisp,livechat,chatwoot,tawk,tidio,zendesk,zoho,disabled'],
+            'provider' => ['required', 'string', 'in:crisp,livechat,chatwoot,tawk,tidio,zendesk,zoho,liveagent,disabled'],
         ];
 
         if ($this->input('provider') !== 'disabled') {
@@ -71,6 +74,10 @@ class {identifier}SettingsFormRequest extends AdminFormRequest
 
         if ($this->input('provider') === 'chatwoot') {
             $rules['baseUrl'] = ['required', 'url', 'max:255'];
+        }
+
+        if ($this->input('provider') === 'liveagent') {
+            $rules['scriptUrl'] = ['required', 'url', 'max:255'];
         }
 
         return $rules;
@@ -82,6 +89,7 @@ class {identifier}SettingsFormRequest extends AdminFormRequest
             'provider' => 'Chat Provider',
             'widgetId' => 'Widget ID',
             'baseUrl' => 'Base URL',
+            'scriptUrl' => 'Script URL',
         ];
     }
 }
