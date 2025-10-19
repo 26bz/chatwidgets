@@ -3,16 +3,17 @@
         <h3 class="box-title">Live Chat Widget Configuration</h3>
     </div>
     <div class="box-body">
-        <p class="text-muted">Configure your live chat integration by selecting a provider and entering the required ID/code.</p>
+        <p class="text-muted">Configure your live chat integration by selecting a provider and entering the required
+            ID/code.</p>
 
-        @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
         <form id="config-form" action="" method="POST">
@@ -20,57 +21,47 @@
                 <label for="provider">Chat Provider <span class="text-danger">*</span></label>
                 <select name="provider" id="provider" class="form-control" required>
                     <option value="">Select a provider...</option>
-                    <option value="crisp" @if($provider=='crisp' ) selected @endif>Crisp Chat</option>
-                    <option value="livechat" @if($provider=='livechat' ) selected @endif>LiveChat.com</option>
-                    <option value="chatwoot" @if($provider=='chatwoot' ) selected @endif>Chatwoot</option>
-                    <option value="tawk" @if($provider=='tawk' ) selected @endif>Tawk.to</option>
-                    <option value="tidio" @if($provider=='tidio' ) selected @endif>Tidio</option>
-                    <option value="zendesk" @if($provider=='zendesk' ) selected @endif>Zendesk Chat</option>
-                    <option value="zoho" @if($provider=='zoho' ) selected @endif>Zoho SalesIQ</option>
-                    <option value="liveagent" @if($provider=='liveagent' ) selected @endif>LiveAgent</option>
-                    <option value="disabled" @if($provider=='disabled' || !$provider) selected @endif>Disabled</option>
+                    <option value="crisp" @if ($provider == 'crisp') selected @endif>Crisp Chat</option>
+                    <option value="livechat" @if ($provider == 'livechat') selected @endif>LiveChat.com</option>
+                    <option value="chatwoot" @if ($provider == 'chatwoot') selected @endif>Chatwoot</option>
+                    <option value="tawk" @if ($provider == 'tawk') selected @endif>Tawk.to</option>
+                    <option value="tidio" @if ($provider == 'tidio') selected @endif>Tidio</option>
+                    <option value="zendesk" @if ($provider == 'zendesk') selected @endif>Zendesk Chat</option>
+                    <option value="zoho" @if ($provider == 'zoho') selected @endif>Zoho SalesIQ</option>
+                    <option value="liveagent" @if ($provider == 'liveagent') selected @endif>LiveAgent</option>
+                    <option value="disabled" @if ($provider == 'disabled' || !$provider) selected @endif>Disabled</option>
                 </select>
                 <small class="form-text text-muted">Choose your live chat provider or disable the widget.</small>
             </div>
 
-            <div class="form-group" id="widget-id-group" style="display: {{ $provider && $provider !== 'disabled' ? 'block' : 'none' }};">
+            <div class="form-group" id="widget-id-group"
+                style="display: {{ $provider && $provider !== 'disabled' ? 'block' : 'none' }};">
                 <label for="widgetId">
                     <span id="widget-label">Widget ID</span> <span class="text-danger">*</span>
                 </label>
-                <input
-                    type="text"
-                    name="widgetId"
-                    id="widgetId"
-                    value="{{ $widgetId }}"
-                    placeholder=""
+                <input type="text" name="widgetId" id="widgetId" value="{{ $widgetId }}" placeholder=""
                     class="form-control" />
                 <small class="form-text text-muted" id="widget-help">
                     Enter your widget ID or code from your chat provider.
                 </small>
             </div>
 
-            <div class="form-group" id="base-url-group" style="display: {{ $provider == 'chatwoot' ? 'block' : 'none' }};">
+            <div class="form-group" id="base-url-group"
+                style="display: {{ $provider == 'chatwoot' ? 'block' : 'none' }};">
                 <label for="baseUrl">Chatwoot Base URL <span class="text-danger">*</span></label>
-                <input
-                    type="url"
-                    name="baseUrl"
-                    id="baseUrl"
-                    value="{{ $baseUrl ?? 'https://app.chatwoot.com' }}"
-                    placeholder="https://app.chatwoot.com"
-                    class="form-control" />
-                <small class="form-text text-muted">Your Chatwoot installation URL (e.g., https://app.chatwoot.com)</small>
+                <input type="url" name="baseUrl" id="baseUrl" value="{{ $baseUrl ?? 'https://app.chatwoot.com' }}"
+                    placeholder="https://app.chatwoot.com" class="form-control" />
+                <small class="form-text text-muted">Your Chatwoot installation URL (e.g.,
+                    https://app.chatwoot.com)</small>
             </div>
 
-            <div class="form-group" id="script-url-group" style="display: {{ $provider == 'liveagent' ? 'block' : 'none' }};">
+            <div class="form-group" id="script-url-group"
+                style="display: {{ $provider == 'liveagent' ? 'block' : 'none' }};">
                 <label for="scriptUrl">LiveAgent Script URL <span class="text-danger">*</span></label>
-                <input
-                    type="url"
-                    name="scriptUrl"
-                    id="scriptUrl"
-                    value="{{ $scriptUrl ?? '' }}"
-                    placeholder="https://yoursubdomain.ladesk.com/scripts/track.js"
-                    class="form-control" />
-                <small class="form-text text-muted">Your LiveAgent script URL (e.g., https://yoursubdomain.ladesk.com/scripts/track.js)</small>
+                <input type="url" name="scriptUrl" id="scriptUrl" value="{{ $scriptUrl ?? '' }}"
+                    placeholder="https://yoursubdomain.ladesk.com/scripts/track.js" class="form-control" />
+                <small class="form-text text-muted">Your LiveAgent script URL (e.g.,
+                    https://yoursubdomain.ladesk.com/scripts/track.js)</small>
             </div>
 
             {{ csrf_field() }}
@@ -78,57 +69,103 @@
                 <button type="submit" name="_method" value="PATCH" class="btn btn-primary">
                     <i class="fa fa-save"></i> Save Configuration
                 </button>
-                @if($provider && $provider !== 'disabled' && $widgetId)
-                <button type="button" class="btn btn-info" id="open-dashboard">
-                    <i class="fa fa-external-link"></i> Open Dashboard
-                </button>
+                @if ($provider && $provider !== 'disabled' && $widgetId)
+                    <button type="button" class="btn btn-info" id="open-dashboard">
+                        <i class="fa fa-external-link"></i> Open Dashboard
+                    </button>
                 @endif
             </div>
         </form>
     </div>
 </div>
 
-@if($provider && $provider !== 'disabled' && $widgetId)
-<div class="box box-success">
-    <div class="box-header with-border">
-        <h3 class="box-title">Integration Status</h3>
+@if ($provider && $provider !== 'disabled' && $widgetId)
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">Integration Status</h3>
+        </div>
+        <div class="box-body">
+            <p><i class="fa fa-check-circle text-success"></i>
+                @switch($provider)
+                    @case('crisp')
+                        Crisp Chat
+                    @break
+
+                    @case('livechat')
+                        LiveChat.com
+                    @break
+
+                    @case('chatwoot')
+                        Chatwoot
+                    @break
+
+                    @case('tawk')
+                        Tawk.to
+                    @break
+
+                    @case('tidio')
+                        Tidio
+                    @break
+
+                    @case('zendesk')
+                        Zendesk Chat
+                    @break
+
+                    @case('zoho')
+                        Zoho SalesIQ
+                    @break
+
+                    @case('liveagent')
+                        LiveAgent
+                    @break
+                @endswitch
+                is configured and active on your panel.
+            </p>
+            <p><strong>Provider:</strong>
+                @switch($provider)
+                    @case('crisp')
+                        Crisp Chat
+                    @break
+
+                    @case('livechat')
+                        LiveChat.com
+                    @break
+
+                    @case('chatwoot')
+                        Chatwoot
+                    @break
+
+                    @case('tawk')
+                        Tawk.to
+                    @break
+
+                    @case('tidio')
+                        Tidio
+                    @break
+
+                    @case('zendesk')
+                        Zendesk Chat
+                    @break
+
+                    @case('zoho')
+                        Zoho SalesIQ
+                    @break
+
+                    @case('liveagent')
+                        LiveAgent
+                    @break
+                @endswitch
+            </p>
+            <p><strong>Widget ID:</strong> <code>{{ $widgetId }}</code></p>
+            @if ($provider == 'chatwoot' && $baseUrl)
+                <p><strong>Base URL:</strong> <code>{{ $baseUrl }}</code></p>
+            @endif
+            @if ($provider == 'liveagent' && $scriptUrl)
+                <p><strong>Script URL:</strong> <code>{{ $scriptUrl }}</code></p>
+            @endif
+            <p class="text-muted">The chat widget will appear on all user dashboard pages.</p>
+        </div>
     </div>
-    <div class="box-body">
-        <p><i class="fa fa-check-circle text-success"></i>
-            @switch($provider)
-            @case('crisp') Crisp Chat @break
-            @case('livechat') LiveChat.com @break
-            @case('chatwoot') Chatwoot @break
-            @case('tawk') Tawk.to @break
-            @case('tidio') Tidio @break
-            @case('zendesk') Zendesk Chat @break
-            @case('zoho') Zoho SalesIQ @break
-            @case('liveagent') LiveAgent @break
-            @endswitch
-            is configured and active on your panel.
-        </p>
-        <p><strong>Provider:</strong>
-            @switch($provider)
-            @case('crisp') Crisp Chat @break
-            @case('livechat') LiveChat.com @break
-            @case('chatwoot') Chatwoot @break
-            @case('tawk') Tawk.to @break
-            @case('tidio') Tidio @break
-            @case('zendesk') Zendesk Chat @break
-            @case('zoho') Zoho SalesIQ @break
-            @case('liveagent') LiveAgent @break
-            @endswitch
-        </p>
-        <p><strong>Widget ID:</strong> <code>{{ $widgetId }}</code></p>
-        @if($provider == 'chatwoot' && $baseUrl)
-        <p><strong>Base URL:</strong> <code>{{ $baseUrl }}</code></p>
-        @endif
-        @if($provider == 'liveagent' && $scriptUrl)
-        <p><strong>Script URL:</strong> <code>{{ $scriptUrl }}</code></p>
-        @endif
-        <p class="text-muted">The chat widget will appear on all user dashboard pages.</p>
-    </div>
-</div>
 @endif
 
 <script>
@@ -226,7 +263,8 @@
                     url = url.replace('{id}', widgetId);
 
                     if (provider === 'chatwoot') {
-                        const baseUrl = document.getElementById('baseUrl').value || 'https://app.chatwoot.com';
+                        const baseUrl = document.getElementById('baseUrl').value ||
+                            'https://app.chatwoot.com';
                         url = url.replace('{baseUrl}', baseUrl);
                     }
 
